@@ -1,0 +1,4 @@
+{
+  "threshold": 0.30000000000000004,
+  "metodo_calibracao": "XGBoost calibrado — isotonic"
+}
