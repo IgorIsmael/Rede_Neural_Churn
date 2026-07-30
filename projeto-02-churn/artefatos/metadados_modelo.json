@@ -1,0 +1,15 @@
+{
+  "projeto": "Projeto 02 — Previsão de Churn",
+  "modelo_final": "Random Forest regularizado",
+  "tipo_modelo": "pipeline_sklearn",
+  "threshold": 0.5,
+  "seed": 42,
+  "numero_features_originais": 19,
+  "metricas": {
+    "accuracy": 0.7615894039735099,
+    "precision": 0.5339805825242718,
+    "recall": 0.7857142857142857,
+    "f1_score": 0.6358381502890174,
+    "roc_auc": 0.8496759514616657
+  }
+}
