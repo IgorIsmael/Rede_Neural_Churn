@@ -48,6 +48,8 @@ Não é necessário ter todos os arquivos para a página abrir. Para prever, bas
 
 > **Compatibilidade de pickle:** modelos serializados podem depender da mesma versão de Python, Scikit-learn, XGBoost e demais bibliotecas usada no treinamento. O `requirements.txt` usa uma combinação conservadora baseada em Python 3.11, NumPy 1.26 e Scikit-learn 1.5. Se o carregamento falhar, use o detalhe exibido pela aplicação e alinhe as versões às registradas no ambiente que gerou o artefato; não tente editar o `.pkl`.
 
+Os modelos deste projeto também referenciam o módulo `dill` durante a desserialização. Por isso, `dill` faz parte das dependências obrigatórias, mesmo que a aplicação carregue os arquivos por meio do `joblib`. Depois de alterar o `requirements.txt` no Streamlit Community Cloud, reinicialize o aplicativo para que o ambiente seja reconstruído.
+
 Se o modelo foi versionado com **Git LFS**, confirme que o deploy recebeu o conteúdo binário, e não somente o pequeno arquivo de ponteiro. A aplicação identifica explicitamente arquivos vazios, páginas HTML e ponteiros LFS. Depois de substituir um artefato, basta recarregar a aplicação: o cache é invalidado pelo tamanho e pela data de modificação do arquivo.
 
 ## Instalação local
