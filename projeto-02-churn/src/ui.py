@@ -1,6 +1,8 @@
 """Elementos visuais reutilizáveis da aplicação."""
 from __future__ import annotations
 
+from html import escape
+
 import pandas as pd
 import streamlit as st
 
@@ -19,18 +21,53 @@ def inject_css() -> None:
     [data-testid="stMetric"] [data-testid="stMetricLabel"],
     [data-testid="stMetric"] [data-testid="stMetricValue"],
     [data-testid="stMetric"] [data-testid="stMetricDelta"] {color:var(--text-color) !important}
-    @media(max-width:640px){.block-container{padding:1rem}.stTabs [data-baseweb="tab"]{font-size:.8rem}}
+    .prediction-summary {
+        display:grid;
+        grid-template-columns:repeat(4, minmax(0, 1fr));
+        gap:1rem;
+        margin:.5rem 0 1.25rem;
+    }
+    .prediction-card {
+        min-width:0;
+        min-height:8rem;
+        background:var(--secondary-background-color);
+        border:1px solid color-mix(in srgb, var(--text-color) 16%, transparent);
+        border-radius:.75rem;
+        padding:1rem 1.15rem;
+    }
+    .prediction-card-label {font-size:.9rem; font-weight:600; margin-bottom:.65rem; color:var(--text-color)}
+    .prediction-card-value {
+        color:var(--text-color);
+        font-size:clamp(1.55rem, 2.4vw, 2.35rem);
+        line-height:1.18;
+        overflow-wrap:anywhere;
+        white-space:normal;
+    }
+    @media(max-width:900px){.prediction-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:640px){
+        .block-container{padding:1rem}
+        .stTabs [data-baseweb="tab"]{font-size:.8rem}
+        .prediction-summary{grid-template-columns:1fr}
+        .prediction-card{min-height:auto}
+    }
     </style>""", unsafe_allow_html=True)
 
 
 def show_prediction(result: dict[str, object]) -> None:
     """Apresenta o resultado probabilístico com linguagem não determinística."""
     probability = float(result["probability"])
-    columns = st.columns(4)
-    columns[0].metric("Probabilidade estimada", f"{probability:.1%}")
-    columns[1].metric("Classificação", str(result["classification"]))
-    columns[2].metric("Faixa", str(result["risk"]))
-    columns[3].metric("Threshold do modelo", f"{float(result['threshold']):.1%}")
+    summary = (
+        ("Probabilidade estimada", f"{probability:.1%}"),
+        ("Classificação", str(result["classification"])),
+        ("Faixa", str(result["risk"])),
+        ("Threshold do modelo", f"{float(result['threshold']):.1%}"),
+    )
+    cards = "".join(
+        f'<div class="prediction-card"><div class="prediction-card-label">{escape(label)}</div>'
+        f'<div class="prediction-card-value">{escape(value)}</div></div>'
+        for label, value in summary
+    )
+    st.markdown(f'<div class="prediction-summary">{cards}</div>', unsafe_allow_html=True)
     st.progress(probability, text="Risco previsto de churn")
     recommendations = {
         "Baixo risco": "Manter o acompanhamento regular do relacionamento.",
