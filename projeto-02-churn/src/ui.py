@@ -9,7 +9,16 @@ def inject_css() -> None:
     """Aplica pequenos ajustes responsivos sem substituir componentes nativos."""
     st.markdown("""<style>
     .block-container {padding-top: 2rem; max-width: 1280px}
-    [data-testid="stMetric"] {background:#f7f9fc; border:1px solid #e3e8ef; padding:1rem; border-radius:.75rem}
+    [data-testid="stMetric"] {
+        background:var(--secondary-background-color);
+        border:1px solid color-mix(in srgb, var(--text-color) 16%, transparent);
+        color:var(--text-color);
+        padding:1rem;
+        border-radius:.75rem;
+    }
+    [data-testid="stMetric"] [data-testid="stMetricLabel"],
+    [data-testid="stMetric"] [data-testid="stMetricValue"],
+    [data-testid="stMetric"] [data-testid="stMetricDelta"] {color:var(--text-color) !important}
     @media(max-width:640px){.block-container{padding:1rem}.stTabs [data-baseweb="tab"]{font-size:.8rem}}
     </style>""", unsafe_allow_html=True)
 

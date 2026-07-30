@@ -166,14 +166,20 @@ def financial_tab() -> None:
         chart[net_col] = pd.to_numeric(chart[net_col], errors="coerce")
         st.line_chart(chart)
         row = summary["row"]
-        columns = st.columns(4)
-        columns[0].metric("Melhor threshold", str(row[threshold_col]))
-        for container, title, candidates in zip(columns[1:], ["Clientes abordados", "Churns reais alcançados", "ROI estimado"],
-                                                  [("clientes_abordados", "abordados"), ("churns_reais_alcancados", "churns_alcancados"), ("roi", "roi_estimado")]):
-            column = find_column(data, candidates)
-            container.metric(title, str(row[column]) if column else "Não informado")
-    except (ArtefactError, ValueError) as exc:
-        st.warning(f"A análise agregada não está disponível: {exc}")
+        available_metrics = [("Melhor threshold", threshold_col)]
+        optional_metrics = [
+            ("Clientes abordados", ("clientes_abordados", "quantidade_clientes_abordados", "qtd_abordados", "abordados")),
+            ("Churns reais alcançados", ("churns_reais_alcancados", "churns_alcancados", "churns_capturados", "churns_retidos")),
+            ("ROI estimado", ("roi", "roi_estimado", "retorno_sobre_investimento")),
+        ]
+        available_metrics.extend((title, column) for title, candidates in optional_metrics if (column := find_column(data, candidates)))
+        metric_columns = st.columns(len(available_metrics))
+        for container, (title, column) in zip(metric_columns, available_metrics):
+            container.metric(title, str(row[column]))
+    except ArtefactError as exc:
+        st.info(f"A análise agregada ainda não foi adicionada: {exc}")
+    except ValueError as exc:
+        st.info(f"A tabela foi carregada, mas o resumo automático não pôde ser montado. {exc}")
 
 
 def _first_available_csv(keys: tuple[str, ...]) -> tuple[pd.DataFrame | None, str | None]:
