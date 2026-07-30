@@ -1,0 +1,2 @@
+# Segredos locais específicos da aplicação.
+.streamlit/secrets.toml
