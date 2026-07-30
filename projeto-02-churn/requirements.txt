@@ -1,9 +1,11 @@
-# Faixa testada para Python 3.11/3.12 no Streamlit Community Cloud.
-streamlit==1.46.1
+# Ambiente conservador para artefatos treinados com a família Scikit-learn 1.5.
+# Use Python 3.11 no Streamlit Community Cloud. Pickles exigem versões compatíveis
+# com as usadas no treinamento; ajuste estas versões conforme os metadados reais.
+streamlit==1.40.2
 pandas==2.2.3
-numpy==2.0.2
-scikit-learn==1.6.1
-xgboost==2.1.4
-shap==0.47.2
+numpy==1.26.4
+scikit-learn==1.5.2
+xgboost==2.1.3
+shap==0.46.0
 joblib==1.4.2
-matplotlib==3.10.3
+matplotlib==3.9.2

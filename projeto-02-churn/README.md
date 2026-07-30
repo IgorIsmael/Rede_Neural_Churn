@@ -46,7 +46,9 @@ Adicione manualmente em `artefatos_avancados/`:
 
 Não é necessário ter todos os arquivos para a página abrir. Para prever, basta o modelo calibrado ou o modelo básico; sem `xgboost_original.pkl`, apenas a explicação SHAP fica indisponível. Não renomeie os arquivos.
 
-> **Compatibilidade de pickle:** modelos serializados podem depender da mesma versão de Python, Scikit-learn, XGBoost e demais bibliotecas usada no treinamento. Se o carregamento falhar, alinhe as versões do `requirements.txt` às versões registradas no ambiente que gerou o artefato; não tente editar o `.pkl`.
+> **Compatibilidade de pickle:** modelos serializados podem depender da mesma versão de Python, Scikit-learn, XGBoost e demais bibliotecas usada no treinamento. O `requirements.txt` usa uma combinação conservadora baseada em Python 3.11, NumPy 1.26 e Scikit-learn 1.5. Se o carregamento falhar, use o detalhe exibido pela aplicação e alinhe as versões às registradas no ambiente que gerou o artefato; não tente editar o `.pkl`.
+
+Se o modelo foi versionado com **Git LFS**, confirme que o deploy recebeu o conteúdo binário, e não somente o pequeno arquivo de ponteiro. A aplicação identifica explicitamente arquivos vazios, páginas HTML e ponteiros LFS. Depois de substituir um artefato, basta recarregar a aplicação: o cache é invalidado pelo tamanho e pela data de modificação do arquivo.
 
 ## Instalação local
 
@@ -82,7 +84,7 @@ Todos os caminhos partem da localização dos próprios módulos via `pathlib.Pa
 1. Publique o repositório que contém seus artefatos autorizados.
 2. Crie um app no Streamlit Community Cloud.
 3. Selecione `projeto-02-churn/app.py` como arquivo principal.
-4. Escolha uma versão compatível de Python (preferencialmente 3.11 ou 3.12) e faça o deploy.
+4. Escolha **Python 3.11**, compatível com as versões fixadas, e faça o deploy.
 
 ## Abas
 
