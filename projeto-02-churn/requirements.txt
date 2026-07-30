@@ -1,0 +1,9 @@
+# Faixa testada para Python 3.11/3.12 no Streamlit Community Cloud.
+streamlit==1.46.1
+pandas==2.2.3
+numpy==2.0.2
+scikit-learn==1.6.1
+xgboost==2.1.4
+shap==0.47.2
+joblib==1.4.2
+matplotlib==3.10.3
